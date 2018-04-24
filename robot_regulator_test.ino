@@ -264,11 +264,16 @@ void update_power_using_PID(byte leftSpeed, byte rightSpeed,float input, bool ne
 
       corrector_koef = PID(input);
 
+             Serial.print("  corrector_koef: ");
+             Serial.println(corrector_koef);
+
       if (need_to_correct_right_speed){
 
         
-          rightSpeedCorrected = byte(rightSpeed + corrector_koef);
-          leftSpeedCorrected = byte(leftSpeed - corrector_koef);
+          rightSpeedCorrected = byte((float)rightSpeed + corrector_koef);
+          leftSpeedCorrected = byte((float)leftSpeed - corrector_koef);
+
+          
           
 
          // leftMotor.setSpeedAndDirection(0,    globalLeftDir);
@@ -277,8 +282,8 @@ void update_power_using_PID(byte leftSpeed, byte rightSpeed,float input, bool ne
       }else{
 
 
-        rightSpeedCorrected = byte(rightSpeed - corrector_koef);
-        leftSpeedCorrected = byte(leftSpeed + corrector_koef);
+        rightSpeedCorrected = byte((float)rightSpeed - corrector_koef);
+        leftSpeedCorrected = byte((float)leftSpeed + corrector_koef);
 
 
        //   leftSpeedCorrected = byte(corrector_koef * leftSpeed);
@@ -288,6 +293,14 @@ void update_power_using_PID(byte leftSpeed, byte rightSpeed,float input, bool ne
         
       }
 
+
+            Serial.print(" leftSpeedCorrected: ");
+            Serial.println(leftSpeedCorrected);
+
+            Serial.print(" rightSpeedCorrected: ");
+            Serial.println(rightSpeedCorrected);
+
+             Serial.println(" ");
       
 
        leftMotor.setSpeedAndDirection(leftSpeedCorrected,    globalLeftDir);
@@ -366,19 +379,19 @@ void loop() {
             steps_proportion = (float)leftMotor.stepsPath / (float)rightMotor.stepsPath;
 
 
-             Serial.print(" leftMotor.stepsPath: ");
-             Serial.print(leftMotor.stepsPath);
+            Serial.print(" leftMotor.stepsPath: ");
+             Serial.println(leftMotor.stepsPath);
 
              Serial.print(" rightMotor.stepsPath: ");
-             Serial.print(rightMotor.stepsPath);
+             Serial.println(rightMotor.stepsPath);
 
              Serial.print(" steps_proportion: ");
            //  Serial.print(steps_proportion.fixed2float());
 
-             Serial.print(steps_proportion);
+            Serial.println(steps_proportion);
 
              Serial.print(" speed_proportion: ");
-             Serial.print(speed_proportion);
+             Serial.println(speed_proportion);
 
         if (steps_proportion != speed_proportion){
 
@@ -386,7 +399,7 @@ void loop() {
               e = steps_proportion - speed_proportion; //вычисляем невязку
 
              Serial.print(" e: ");
-             Serial.print(e);
+             Serial.println(e);
 
                
 

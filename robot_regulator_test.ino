@@ -314,7 +314,7 @@ void update_power_using_PID(byte leftSpeed, byte rightSpeed,float input, bool ne
 
 void loop() {
 
-      if (first){
+      if (true){
       
               byte leftSpeed =  30;
               byte rightSpeed = 30;
@@ -363,6 +363,9 @@ void loop() {
     float steps_proportion;
     float e = 0; //невязка
 
+
+    unsigned int stepsPathDelta = 0;
+
   /*
    *  TODO
    * 
@@ -370,8 +373,21 @@ void loop() {
    * 
    */
 
+    if (leftMotor.stepsPath > rightMotor.stepsPath ){
+
+       stepsPathDelta = leftMotor.stepsPath - rightMotor.stepsPath;
+      
+    }else{
+
+
+           stepsPathDelta = rightMotor.stepsPath -  leftMotor.stepsPath;
+      
+    }
+
+
+  stepsPathDelta =  stepsPathDelta&0xFF;
    
-  if ( ((leftMotor.stepsPath - rightMotor.stepsPath ) > 2 ) && (leftMotor.stepsPath > 0) && (rightMotor.stepsPath > 0) ){
+  if ( ( stepsPathDelta > 2 ) && (leftMotor.stepsPath > 0) && (rightMotor.stepsPath > 0) && (globalLeftMotorSpeed > 0) && (globalRightMotorSpeed > 0) ){
 
 
           
@@ -394,6 +410,9 @@ void loop() {
 
              Serial.print(" speed_proportion: ");
              Serial.println(speed_proportion);
+
+             Serial.print("  stepsPathDelta: ");
+             Serial.println((byte)stepsPathDelta);
 
         if (steps_proportion != speed_proportion){
 
